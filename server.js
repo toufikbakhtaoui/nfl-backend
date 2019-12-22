@@ -1,3 +1,4 @@
+const db = require('./config/db-config')
 const fastify = require('fastify')({
     logger: true
 })
@@ -5,6 +6,8 @@ const fastify = require('fastify')({
 fastify.get('/', async(request, reply) => {
     return 'Welcome to the nfl'
 })
+
+db()
 
 const start = async () => {
     try {

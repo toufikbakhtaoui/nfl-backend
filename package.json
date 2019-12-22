@@ -9,6 +9,7 @@
   "author": "toufikbakhtaoui <toufik.bakhtaoui@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "fastify": "^2.11.0"
+    "fastify": "^2.11.0",
+    "mongoose": "^5.8.2"
   }
 }
