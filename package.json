@@ -9,7 +9,7 @@
   "author": "toufikbakhtaoui <toufik.bakhtaoui@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "boom": "^7.3.0",
+    "@hapi/boom": "^8.0.1",
     "fastify": "^2.11.0",
     "fastify-swagger": "^2.5.0",
     "mongoose": "^5.8.2"
