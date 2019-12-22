@@ -1,6 +1,7 @@
 const swagger = require('./config/swagger-config')
 const routes = require('./config/routes-config')
-const db = require('./config/db-config')
+const db = require('./config/db/db-config')
+const data = require('./config/db/data-config')
 const start = require('./config/server-config')
 
 const fastify = require('fastify')({
@@ -14,4 +15,5 @@ fastify.get('/', async(request, reply) => {
 swagger(fastify)
 routes(fastify)
 db()
+data()
 start(fastify)

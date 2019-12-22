@@ -1,11 +1,11 @@
 const boom = require('@hapi/boom')
 
-const Team = require('./team')
+const teamModel = require('./team')
 
 exports.getTeams = async (req, reply) => {
     try {
-      const Teams = await Team.find()
-      return Teams
+      const teams = await teamModel.find()
+      return teams
     } catch (err) {
       throw boom.boomify(err)
     }
@@ -15,8 +15,8 @@ exports.getTeams = async (req, reply) => {
   exports.getOneTeam = async (req, reply) => {
     try {
       const id = req.params.id
-      const Team = await Team.findById(id)
-      return Team
+      const team = await teamModel.findById(id)
+      return team
     } catch (err) {
       throw boom.boomify(err)
     }
@@ -25,8 +25,8 @@ exports.getTeams = async (req, reply) => {
   // Add a new Team
   exports.addTeam = async (req, reply) => {
     try {
-      const Team = new Team(req.body)
-      return Team.save()
+      const team = new teamModel(req.body)
+      return team.save()
     } catch (err) {
       throw boom.boomify(err)
     }
@@ -36,9 +36,9 @@ exports.getTeams = async (req, reply) => {
   exports.updateTeam = async (req, reply) => {
     try {
       const id = req.params.id
-      const Team = req.body
-      const { ...updateData } = Team
-      const update = await Team.findByIdAndUpdate(id, updateData, { new: true })
+      const team = req.body
+      const { ...updateData } = team
+      const update = await teamModel.findByIdAndUpdate(id, updateData, { new: true })
       return update
     } catch (err) {
       throw boom.boomify(err)
@@ -49,8 +49,8 @@ exports.getTeams = async (req, reply) => {
   exports.deleteTeam = async (req, reply) => {
     try {
       const id = req.params.id
-      const Team = await Team.findByIdAndRemove(id)
-      return Team
+      const team = await teamModel.findByIdAndRemove(id)
+      return team
     } catch (err) {
       throw boom.boomify(err)
     }
