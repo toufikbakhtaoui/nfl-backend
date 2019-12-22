@@ -4,13 +4,12 @@ const fastify = require('fastify')({
     logger: true
 })
 
-fastify.register(require('fastify-swagger'), swagger.options) 
+swagger(fastify)
+routes(fastify)
 
 fastify.get('/', async(request, reply) => {
     return 'Welcome to the nfl'
 })
-
-routes(fastify)
 
 const server = async () => {
     try {
