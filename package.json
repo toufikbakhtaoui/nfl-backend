@@ -4,7 +4,7 @@
   "main": "index.js",
   "repository": "https://github.com/toufikbakhtaoui/nfl-backend.git",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon main.js"
   },
   "author": "toufikbakhtaoui <toufik.bakhtaoui@gmail.com>",
   "license": "MIT",

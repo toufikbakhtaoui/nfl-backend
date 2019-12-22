@@ -1,4 +1,3 @@
-const db = require('./config/db-config')
 const fastify = require('fastify')({
     logger: true
 })
@@ -7,9 +6,7 @@ fastify.get('/', async(request, reply) => {
     return 'Welcome to the nfl'
 })
 
-db()
-
-const start = async () => {
+const server = async () => {
     try {
         await fastify.listen(3000)
         fastify.log.info(`server listening on ${fastify.server.address().port}`)
@@ -19,4 +16,4 @@ const start = async () => {
     }
 }
 
-start()
+module.exports = server
