@@ -8,6 +8,11 @@ const routes = [
     },
     {
         method: 'GET',
+        url: '/api/games/season/:season/week/:week/scores',
+        handler: gameController.getScores,
+    },
+    {
+        method: 'GET',
         url: '/api/games',
         handler: gameController.getAllGames,
     },
