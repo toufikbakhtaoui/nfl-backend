@@ -3,8 +3,13 @@ const standingController = require('./standings-controller')
 const routes = [
     {
         method: 'GET',
-        url: '/api/standings',
+        url: '/api/standings/season/:season',
         handler: standingController.getStandings,
+    },
+    {
+        method: 'GET',
+        url: '/api/standings',
+        handler: standingController.getAllStandings,
     },
     {
         method: 'GET',
