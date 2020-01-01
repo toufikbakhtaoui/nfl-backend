@@ -2,35 +2,35 @@ const rankingController = require('./rankings-controller')
 
 const routes = [
     {
-      method: 'GET',
-      url: '/api/rankings',
-      handler: rankingController.getRankings
+        method: 'GET',
+        url: '/api/rankings',
+        handler: rankingController.getRankings,
     },
     {
-      method: 'GET',
-      url: '/api/rankings/:id',
-      handler: rankingController.getOneRanking
+        method: 'GET',
+        url: '/api/rankings/:id',
+        handler: rankingController.getOneRanking,
     },
     {
-      method: 'POST',
-      url: '/api/rankings',
-      handler: rankingController.addRanking,
+        method: 'POST',
+        url: '/api/rankings',
+        handler: rankingController.addRanking,
     },
     {
-      method: 'PUT',
-      url: '/api/rankings/:id',
-      handler: rankingController.updateRanking
+        method: 'PUT',
+        url: '/api/rankings/:id',
+        handler: rankingController.updateRanking,
     },
     {
-      method: 'DELETE',
-      url: '/api/rankings/:id',
-      handler: rankingController.deleteRanking
+        method: 'DELETE',
+        url: '/api/rankings/:id',
+        handler: rankingController.deleteRanking,
     },
     {
-      method: 'DELETE',
-      url: '/api/rankings',
-      handler: rankingController.deleteAllRanking
-    }
-  ]
-  
-  module.exports = routes
+        method: 'DELETE',
+        url: '/api/rankings',
+        handler: rankingController.deleteAllRanking,
+    },
+]
+
+module.exports = routes
