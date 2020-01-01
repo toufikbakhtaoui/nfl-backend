@@ -25,6 +25,11 @@ const routes = [
       method: 'DELETE',
       url: '/api/teams/:id',
       handler: teamController.deleteTeam
+    },
+    {
+      method: 'DELETE',
+      url: '/api/teams',
+      handler: teamController.deleteAllTeam
     }
   ]
   

@@ -56,3 +56,13 @@ exports.getTeams = async (req, reply) => {
     }
   }
 
+  // Delete all Team
+  exports.deleteAllTeam = async (req, reply) => {
+    try {
+      const team = await teamModel.deleteMany({})
+      return
+    } catch (err) {
+      throw boom.boomify(err)
+    }
+  }
+
