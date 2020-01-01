@@ -3,8 +3,13 @@ const gameController = require('./games-controller')
 const routes = [
     {
         method: 'GET',
-        url: '/api/games',
+        url: '/api/games/season/:season/week/:week',
         handler: gameController.getGames,
+    },
+    {
+        method: 'GET',
+        url: '/api/games',
+        handler: gameController.getAllGames,
     },
     {
         method: 'GET',
