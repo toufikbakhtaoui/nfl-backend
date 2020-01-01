@@ -1,25 +1,26 @@
 const mongoose = require('mongoose')
 
 const gameSchema = new mongoose.Schema({
-    gameId: {
+    season: {
         type: Number,
         required: true
     },
-    name: {
-        type: String,
+    week: {
+        type: Number
+    },
+    homeTeam: {
+        type: Number,
         required: true
     },
-    city: String,
-    stadium: String,
-    conference: {
-        type: String,
-        enum: ['AFC', 'NFC'],
+    awayTeam: {
+        type: Number,
         required: true
     },
-    division: {
-        type: String,
-        enum: ['NORTH', 'SOUTH', 'EAST', 'WEST'],
-        required: true
+    homeTeamScore: {
+        type: Number,
+    },
+    awayTeamScore: {
+        type: Number,
     }
 }, 
 { timestamps: true }
