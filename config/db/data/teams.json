@@ -153,8 +153,8 @@
     },
     {
         "teamId": 20,
-        "name": "PHILADELPHIA",
-        "city": "EAGLES",
+        "name": "EAGLES",
+        "city": "PHILADELPHIA",
         "stadium": "Lincoln Financial Field",
         "conference": "NFC",
         "division": "EAST"
