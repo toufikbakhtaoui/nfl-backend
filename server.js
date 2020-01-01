@@ -19,4 +19,5 @@ db();
 data.initTeams();
 data.initSeason();
 data.initRankings();
+data.initStandings();
 start(fastify);
