@@ -1,28 +1,33 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const standingSchema = new mongoose.Schema({
+const standingSchema = new mongoose.Schema(
+  {
+    season: {
+      type: Number,
+      required: true
+    },
     team: {
-        type: Number,
-        unique: true,
-        required: true
+      type: Number,
+      unique: true,
+      required: true
     },
     win: {
-        type: Number
+      type: Number
     },
     lost: {
-        type: Number
+      type: Number
     },
     draw: {
-        type: Number
+      type: Number
     },
     scored: {
-        type: Number
+      type: Number
     },
     conceded: {
-        type: Number
+      type: Number
     }
-}, 
-{ timestamps: true }
-)
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('Standing', standingSchema)
+module.exports = mongoose.model("Standing", standingSchema);
