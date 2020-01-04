@@ -39,6 +39,7 @@ exports.getScores = async (req, reply) => {
             game.awayTeamScore = score.getScore()
             await game.save()
         }
+        score.updateStandings(games, season)
         return games
     } catch (err) {
         throw boom.boomify(err)
