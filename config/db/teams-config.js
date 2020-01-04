@@ -6,7 +6,7 @@ const initTeams = async () => {
         return
     }
     let team = null
-    const teamList = require('./data/teams.json.js')
+    const teamList = require('../../data/teams')
     teamList.forEach(element => {
         team = new teamModel(element)
         teams.push(team)

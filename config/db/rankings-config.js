@@ -9,7 +9,7 @@ const initRankings = async () => {
     let ranking = null
     for (let index = 1; index < 33; index++) {
         ranking = new rankingModel({
-            season: 1,
+            season: 0,
             team: index,
             ranking: index,
         })
