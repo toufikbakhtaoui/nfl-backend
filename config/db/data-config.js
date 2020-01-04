@@ -4,4 +4,10 @@ const initRankings = require('./rankings-config')
 const initStandings = require('./standings-config')
 const initGames = require('./games-config')
 
-module.exports = { initTeams, initSeason, initRankings, initStandings, initGames }
+module.exports = {
+    initTeams,
+    initSeason,
+    initRankings,
+    initStandings,
+    initGames,
+}
