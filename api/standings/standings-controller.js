@@ -6,7 +6,7 @@ exports.getStandings = async (req, reply) => {
     try {
         const season = req.params.season
         const standings = await standingModel.find({
-            season: season
+            season: season,
         })
         return standings
     } catch (err) {
