@@ -1,6 +1,6 @@
 const boom = require('@hapi/boom')
 const score = require('../../cluster/score')
-
+const seasonModel = require('../seasons/season')
 const gameModel = require('./game')
 
 exports.getAllGames = async (req, reply) => {
@@ -30,16 +30,22 @@ exports.getScores = async (req, reply) => {
     try {
         const season = req.params.season
         const week = req.params.week
+        const weekToPlay = await seasonModel.find({ seasonId: season })
         const games = await gameModel.find({
             season: season,
             week: week,
         })
+        if (weekToPlay !== week) {
+            console.log('not the right week*****************************')
+            return games
+        }
         for (game of games) {
             game.homeTeamScore = score.getScore()
             game.awayTeamScore = score.getScore()
             await game.save()
         }
         score.updateStandings(games, season)
+        await score.updateSeason(season)
         return games
     } catch (err) {
         throw boom.boomify(err)

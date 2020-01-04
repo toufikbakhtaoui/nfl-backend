@@ -1,5 +1,12 @@
 const standingModel = require('../api/standings/standing')
+const seasonModel = require('../api/seasons/season')
 
+const updateSeason = async season => {
+    await seasonModel.findOneAndUpdate(
+        { seasonId: season },
+        { $inc: { weekToPlay: 1 } }
+    )
+}
 const getScore = () => {
     const min = 3
     const max = 45
@@ -52,4 +59,4 @@ const updateStandings = (games, season) => {
     })
 }
 
-module.exports = { getScore, updateStandings }
+module.exports = { getScore, updateStandings, updateSeason }
