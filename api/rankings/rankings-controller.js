@@ -1,10 +1,42 @@
 const boom = require('@hapi/boom')
-
+const teamModel = require('../teams/team')
 const rankingModel = require('./ranking')
+
+const compare = (a, b) => {
+    let comparaison = 0
+    const first = a.team
+    const second = b.team
+    if (first > second) {
+        comparaison = 1
+    } else if (first < second) {
+        comparaison = -1
+    } return comparaison
+}
+
+exports.getRankedTeams = async (req, reply) => {
+    try {
+        const season = req.params.season - 1
+        let teams = await teamModel.find()
+        let rankings = await rankingModel.find({ season: season })
+        teams.sort(compare)   
+        rankings.sort(compare)
+        let rankedTeams = []
+        teams.forEach(item => {
+            rankedTeams.push({
+                'rank': item.team, 
+                'team': rankings[item.team-1]
+            })
+        })
+        return rankedTeams
+    } catch (err) {
+        throw boom.boomify(err)
+    }
+}
 
 exports.getRankings = async (req, reply) => {
     try {
-        const rankings = await rankingModel.find()
+        const season = req.params.season - 1
+        const rankings = await rankingModel.find({ season: season })
         return rankings
     } catch (err) {
         throw boom.boomify(err)

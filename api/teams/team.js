@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const teamSchema = new mongoose.Schema(
     {
-        teamId: {
+        team: {
             type: Number,
             required: true,
         },

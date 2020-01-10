@@ -36,7 +36,6 @@ exports.getScores = async (req, reply) => {
             week: week,
         })
         if (weekToPlay !== week) {
-            console.log('not the right week*****************************')
             return games
         }
         for (game of games) {
