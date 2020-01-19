@@ -11,6 +11,7 @@ const initStandings = async () => {
         standing = new standingModel({
             season: 1,
             team: index,
+            identifier: index,
             win: 0,
             lost: 0,
             draw: 0,

@@ -17,6 +17,14 @@ const gameSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        homeTeamIdentifier: {
+            type: Number,
+            required: false,
+        },
+        awayTeamIdentifier: {
+            type: Number,
+            required: false,
+        },
         homeTeamScore: {
             type: Number,
         },

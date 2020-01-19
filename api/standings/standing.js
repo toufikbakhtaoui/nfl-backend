@@ -11,6 +11,11 @@ const standingSchema = new mongoose.Schema(
             unique: true,
             required: true,
         },
+        identifier: {
+            type: Number,
+            unique: true,
+            required: true,
+        },
         win: {
             type: Number,
         },
