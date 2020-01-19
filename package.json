@@ -1,18 +1,20 @@
 {
-  "name": "nfl-backend",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/toufikbakhtaoui/nfl-backend.git",
-  "scripts": {
-    "start": "nodemon server.js"
-  },
-  "author": "toufikbakhtaoui <toufik.bakhtaoui@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "@hapi/boom": "^8.0.1",
-    "fastify": "^2.11.0",
-    "fastify-cors": "^3.0.0",
-    "fastify-swagger": "^2.5.0",
-    "mongoose": "^5.8.2"
-  }
+    "name": "nfl-backend",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/toufikbakhtaoui/nfl-backend.git",
+    "scripts": {
+        "start": "pm2 start server.js --watch",
+        "refactor": "npx prettier --config .prettierrc.json --write \"**\/*.js\""
+    },
+    "author": "toufikbakhtaoui <toufik.bakhtaoui@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "@hapi/boom": "^8.0.1",
+        "cors": "^2.8.5",
+        "fastify": "^2.11.0",
+        "fastify-cors": "^3.0.0",
+        "fastify-swagger": "^2.5.0",
+        "mongoose": "^5.8.2"
+    }
 }
