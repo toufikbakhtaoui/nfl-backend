@@ -1,4 +1,4 @@
-const standingModel = require('../../api/standings/standing')
+const standingModel = require('./standing')
 
 const initStandings = async () => {
     const standings = await standingModel.find()

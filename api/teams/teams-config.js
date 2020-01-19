@@ -1,4 +1,4 @@
-const teamModel = require('../../api/teams/team')
+const teamModel = require('./team')
 
 const initTeams = async () => {
     const teams = await teamModel.find()

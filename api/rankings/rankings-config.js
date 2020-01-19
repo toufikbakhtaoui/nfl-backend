@@ -1,4 +1,4 @@
-const rankingModel = require('../../api/rankings/ranking')
+const rankingModel = require('./ranking')
 
 const initRankings = async () => {
     const rankings = await rankingModel.find()

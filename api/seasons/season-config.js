@@ -1,4 +1,4 @@
-const seasonModel = require('../../api/seasons/season')
+const seasonModel = require('./season')
 
 const initSeason = async () => {
     const seasons = await seasonModel.find()

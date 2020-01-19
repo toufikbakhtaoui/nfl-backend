@@ -1,4 +1,4 @@
-const gameModel = require('../../api/games/game')
+const gameModel = require('./game')
 const generate_season = require('../../cluster/regular-season-generator')
 const initGames = async () => {
     const games = await gameModel.find()
