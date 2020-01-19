@@ -3,6 +3,12 @@ const score = require('../../cluster/score')
 const seasonModel = require('../seasons/season')
 const gameModel = require('./game')
 
+const regular_season_games = 16
+const playoffs = () => {
+    //order teams in each division
+    //save games
+} 
+
 exports.getAllGames = async (req, reply) => {
     try {
         const games = await gameModel.find()
@@ -44,6 +50,9 @@ exports.getScores = async (req, reply) => {
             await game.save()
         }
         score.updateStandings(games, season)
+        if (week === regular_season_games) {
+            playoffs()    
+        }
         await score.updateSeason(season)
         return games
     } catch (err) {
