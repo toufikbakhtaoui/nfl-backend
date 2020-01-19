@@ -21,7 +21,7 @@ const teamSchema = new mongoose.Schema(
             type: String,
             enum: ['NORTH', 'SOUTH', 'EAST', 'WEST'],
             required: true,
-        },
+        }
     },
     { timestamps: true }
 )

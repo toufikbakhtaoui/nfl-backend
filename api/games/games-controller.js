@@ -2,20 +2,35 @@ const boom = require('@hapi/boom')
 const score = require('../../cluster/score')
 const seasonModel = require('../seasons/season')
 const gameModel = require('./game')
-
+const standingModel = require('../standings/standing')
 const regular_season_games = 16
-const playoffs = () => {
+const wild_card_week = 17
+const wild_card = async season => {
+    //TODO optimize
+    let division_champions = []
+    let others = []
+    for (let index = 1; index < 9; index++) {
+        let teamsIds = [
+            (index - 1) * 4 + 1,
+            (index - 1) * 4 + 2,
+            (index - 1) * 4 + 3,
+            (index - 1) * 4 + 4,
+        ]
+        const division_teams = await standingModel
+            .find({ season: season })
+            .where('team')
+            .in(teamsIds)
+            .sort('win')
+        division_champions.push(division_teams[0])
+        others.push(division_teams[1])
+        others.push(division_teams[2])
+        others.push(division_teams[3])
+        console.log('-------- division teams ------------ ', division_teams)
+    }
+    //Sort division champions
+
     //order teams in each division
     //save games
-} 
-
-exports.getAllGames = async (req, reply) => {
-    try {
-        const games = await gameModel.find()
-        return games
-    } catch (err) {
-        throw boom.boomify(err)
-    }
 }
 
 exports.getGames = async (req, reply) => {
@@ -51,67 +66,10 @@ exports.getScores = async (req, reply) => {
         }
         score.updateStandings(games, season)
         if (week === regular_season_games) {
-            playoffs()    
+            wild_card(season)
         }
         await score.updateSeason(season)
         return games
-    } catch (err) {
-        throw boom.boomify(err)
-    }
-}
-
-// Get single Game by ID
-exports.getOneGame = async (req, reply) => {
-    try {
-        const id = req.params.id
-        const game = await gameModel.findById(id)
-        return game
-    } catch (err) {
-        throw boom.boomify(err)
-    }
-}
-
-// Add a new Game
-exports.addGame = async (req, reply) => {
-    try {
-        const game = new gameModel(req.body)
-        return game.save()
-    } catch (err) {
-        throw boom.boomify(err)
-    }
-}
-
-// Update an existing Game
-exports.updateGame = async (req, reply) => {
-    try {
-        const id = req.params.id
-        const game = req.body
-        const { ...updateData } = game
-        const update = await gameModel.findByIdAndUpdate(id, updateData, {
-            new: true,
-        })
-        return update
-    } catch (err) {
-        throw boom.boomify(err)
-    }
-}
-
-// Delete a Game
-exports.deleteGame = async (req, reply) => {
-    try {
-        const id = req.params.id
-        const game = await gameModel.findByIdAndRemove(id)
-        return game
-    } catch (err) {
-        throw boom.boomify(err)
-    }
-}
-
-// Delete all Game
-exports.deleteAllGame = async (req, reply) => {
-    try {
-        const game = await gameModel.deleteMany({})
-        return
     } catch (err) {
         throw boom.boomify(err)
     }
