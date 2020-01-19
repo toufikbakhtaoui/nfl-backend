@@ -2,7 +2,9 @@ const part_one = require('../data/part-one')
 const part_two = require('../data/part-two.json')
 const part_three = require('../data/part-three.json')
 const gameModel = require('../api/games/game')
+const rankingModel = require('../api/rankings/ranking')
 
+let allGames = []
 const object_to_map = object => {
     const map = new Map()
     Object.keys(object).forEach(key => {
@@ -39,7 +41,7 @@ const generate_head_to_head = (
             homeTeam: teams_in_first_division[index],
             awayTeam: teams_in_second_division[index],
         })
-        game.save()
+        allGames.push(game)
     }
 }
 
@@ -70,7 +72,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_first_division[0],
         awayTeam: teams_in_second_division[0],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -78,7 +80,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_first_division[2],
         awayTeam: teams_in_second_division[2],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -86,7 +88,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_first_division[1],
         awayTeam: teams_in_second_division[1],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -94,7 +96,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_first_division[3],
         awayTeam: teams_in_second_division[3],
     })
-    game.save()
+    allGames.push(game)
 
     week++
 
@@ -104,7 +106,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_second_division[1],
         awayTeam: teams_in_first_division[0],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -112,7 +114,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_second_division[0],
         awayTeam: teams_in_first_division[1],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -120,7 +122,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_second_division[3],
         awayTeam: teams_in_first_division[2],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -128,7 +130,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_second_division[2],
         awayTeam: teams_in_first_division[3],
     })
-    game.save()
+    allGames.push(game)
 
     week++
 
@@ -138,7 +140,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_first_division[0],
         awayTeam: teams_in_second_division[2],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -146,7 +148,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_first_division[1],
         awayTeam: teams_in_second_division[3],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -154,7 +156,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_first_division[2],
         awayTeam: teams_in_second_division[0],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -162,7 +164,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_first_division[3],
         awayTeam: teams_in_second_division[1],
     })
-    game.save()
+    allGames.push(game)
 
     week++
 
@@ -172,7 +174,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_second_division[2],
         awayTeam: teams_in_first_division[1],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -180,7 +182,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_second_division[3],
         awayTeam: teams_in_first_division[0],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -188,7 +190,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_second_division[1],
         awayTeam: teams_in_first_division[2],
     })
-    game.save()
+    allGames.push(game)
 
     game = gameModel({
         season: season,
@@ -196,7 +198,7 @@ const generate_in_conference_division_matchup_games = (
         homeTeam: teams_in_second_division[0],
         awayTeam: teams_in_first_division[3],
     })
-    game.save()
+    allGames.push(game)
 }
 
 const generate_same_position = (part, week, season) => {
@@ -233,7 +235,7 @@ const generate_in_same_division = season => {
                     homeTeam: homeTeam,
                     awayTeam: awayTeam,
                 })
-                matchup.save()
+                allGames.push(matchup)
             }
         }
     }
@@ -278,6 +280,12 @@ const generate_season = async season => {
     generate_in_same_division(season)
     generate_over_conference(season)
     generate_in_conference(season)
+    const rankings = await rankingModel.find({ season: season - 1 }).sort('ranking')
+    allGames.forEach(game => {
+        game.homeTeamIdentifier = rankings[game.homeTeam -1].team
+        game.awayTeamIdentifier = rankings[game.awayTeam -1].team
+    });
+    await gameModel.insertMany(allGames)
 }
 
 module.exports = generate_season

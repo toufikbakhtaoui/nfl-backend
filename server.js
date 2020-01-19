@@ -16,9 +16,14 @@ fastify.get('/', async (request, reply) => {
 swagger(fastify)
 routes(fastify)
 db()
-data.initTeams()
-data.initSeason()
-data.initRankings()
-data.initStandings()
-data.initGames()
+data.initRankings().then(() => {
+    data.initTeams().then(() => {
+        data.initSeason().then(() => {
+            data.initStandings().then(() => {
+                data.initGames()
+            })
+        })
+    })
+})
+
 start(fastify)
