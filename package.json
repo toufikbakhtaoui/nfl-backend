@@ -4,8 +4,8 @@
     "main": "index.js",
     "repository": "https://github.com/toufikbakhtaoui/nfl-backend.git",
     "scripts": {
-        "start": "pm2 start server.js --watch",
-        "refactor": "npx prettier --config .prettierrc.json --write \"**\/*.js\""
+        "start": "nodemon server.js",
+        "refactor": "npx prettier --config .prettierrc.json --write \"**/*.js\""
     },
     "author": "toufikbakhtaoui <toufik.bakhtaoui@gmail.com>",
     "license": "MIT",
