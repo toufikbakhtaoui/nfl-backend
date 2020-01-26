@@ -2,7 +2,7 @@ const part_one = require('../data/part-one')
 const part_two = require('../data/part-two.json')
 const part_three = require('../data/part-three.json')
 const gameModel = require('../api/games/game')
-const rankingModel = require('../api/rankings/ranking')
+const teamModel = require('../api/teams/team')
 
 let allGames = []
 const object_to_map = object => {
@@ -275,15 +275,15 @@ const generate_in_conference = season => {
 
 const generate_season = async season => {
     await gameModel.deleteMany({ season: season })
-    console.log('deleting all games')
+    console.log('deleting all games for season', season)
     generate_same_position_week(season)
     generate_in_same_division(season)
     generate_over_conference(season)
     generate_in_conference(season)
-    const rankings = await rankingModel.find({ season: season - 1 }).sort('ranking')
+    const teams = await teamModel.find({ 'rankings.season': season - 1 }).sort('rankings.rank')
     allGames.forEach(game => {
-        game.homeTeamIdentifier = rankings[game.homeTeam -1].team
-        game.awayTeamIdentifier = rankings[game.awayTeam -1].team
+        game.homeTeamIdentifier = teams[game.homeTeam -1].team
+        game.awayTeamIdentifier = teams[game.awayTeam -1].team
     });
     await gameModel.insertMany(allGames)
 }

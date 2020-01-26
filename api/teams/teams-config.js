@@ -9,6 +9,10 @@ const initTeams = async () => {
     const teamList = require('../../data/teams')
     teamList.forEach(element => {
         team = new teamModel(element)
+        team.rankings.push({
+            season: 0,
+            rank: element.team
+        })
         teams.push(team)
     })
     await teamModel.insertMany(teams)
