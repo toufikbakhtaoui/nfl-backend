@@ -10,3 +10,36 @@ exports.getTeams = async (req, reply) => {
         throw boom.boomify(err)
     }
 }
+
+exports.getTeamsByRanks = async (req, reply) => {
+    try {
+        const season = Number(req.params.season)
+        const teams = await teamModel.aggregate([
+            { $unwind: '$rankings' },
+            {
+                $match: {
+                    'rankings.season': season,
+                },
+            },
+            {
+                $group: {
+                    _id: {
+                        conference: '$conference',
+                        division: '$division',
+                    },
+                    teams: {
+                        $push: {
+                            name: '$name',
+                            city: '$city',
+                            stadium: '$stadium',
+                            ranking: '$rankings.rank',
+                        },
+                    },
+                },
+            },
+        ])
+        return teams
+    } catch (err) {
+        throw boom.boomify(err)
+    }
+}
