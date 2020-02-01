@@ -15,10 +15,10 @@ exports.getTeamsByRanks = async (req, reply) => {
     try {
         const season = Number(req.params.season)
         const teams = await teamModel.aggregate([
-            { $unwind: '$rankings' },
+            { $unwind: '$standings' },
             {
                 $match: {
-                    'rankings.season': season,
+                    'standings.season': season,
                 },
             },
             {
@@ -29,10 +29,15 @@ exports.getTeamsByRanks = async (req, reply) => {
                     },
                     teams: {
                         $push: {
-                            name: '$name',
                             city: '$city',
+                            name: '$name',
                             stadium: '$stadium',
-                            ranking: '$rankings.rank',
+                            ranking: '$standings.rank',
+                            win: '$standings.win',
+                            lost: '$standings.lost',
+                            draw: '$standings.draw',
+                            scored: '$standings.scored',
+                            conceded: '$standings.conceded',
                         },
                     },
                 },

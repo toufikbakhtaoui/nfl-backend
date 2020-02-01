@@ -1,4 +1,4 @@
-const standingModel = require('../api/standings/standing')
+const teamModel = require('../api/teams/team')
 const seasonModel = require('../api/seasons/season')
 
 const updateSeason = async season => {
@@ -22,8 +22,8 @@ const isWin = (firstScore, secondScore) => {
 }
 
 const updateOneStanding = async (season, team, w, l, d, s, c) => {
-    await standingModel.findOneAndUpdate(
-        { team: team, season: season },
+    await teamModel.findOneAndUpdate(
+        { 'standings.rank': team, 'standings.season': season },
         {
             $inc: {
                 win: w,

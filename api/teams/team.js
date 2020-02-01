@@ -1,17 +1,30 @@
 const mongoose = require('mongoose')
 
-const rankingSchema = new mongoose.Schema(
-    {
-        season: {
-            type: Number,
-            required: true,
-        },
-        rank: {
-            type: Number,
-            required: true,
-        },
-    }
-)
+const standingSchema = new mongoose.Schema({
+    season: {
+        type: Number,
+        required: true,
+    },
+    rank: {
+        type: Number,
+        required: true,
+    },
+    win: {
+        type: Number,
+    },
+    lost: {
+        type: Number,
+    },
+    draw: {
+        type: Number,
+    },
+    scored: {
+        type: Number,
+    },
+    conceded: {
+        type: Number,
+    },
+})
 
 const teamSchema = new mongoose.Schema(
     {
@@ -35,7 +48,7 @@ const teamSchema = new mongoose.Schema(
             enum: ['NORTH', 'SOUTH', 'EAST', 'WEST'],
             required: true,
         },
-        rankings: [rankingSchema]
+        standings: [standingSchema],
     },
     { timestamps: true }
 )

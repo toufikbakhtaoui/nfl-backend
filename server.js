@@ -18,9 +18,7 @@ routes(fastify)
 db()
 data.initTeams().then(() => {
     data.initSeason().then(() => {
-        data.initStandings().then(() => {
-            data.initGames()
-        })
+        data.initGames()
     })
 })
 

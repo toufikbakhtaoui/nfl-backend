@@ -2,25 +2,27 @@ const boom = require('@hapi/boom')
 const score = require('../../cluster/score')
 const seasonModel = require('../seasons/season')
 const gameModel = require('./game')
-const standingModel = require('../standings/standing')
+
 const regular_season_games = 16
 const wild_card_week = 17
+
 const wild_card = async season => {
     //TODO optimize
     let division_champions = []
     let others = []
+    const team_per_division = 4
     for (let index = 1; index < 9; index++) {
         let teamsIds = [
-            (index - 1) * 4 + 1,
-            (index - 1) * 4 + 2,
-            (index - 1) * 4 + 3,
-            (index - 1) * 4 + 4,
+            (index - 1) * team_per_division + 1,
+            (index - 1) * team_per_division + 2,
+            (index - 1) * team_per_division + 3,
+            (index - 1) * team_per_division + 4,
         ]
-        const division_teams = await standingModel
-            .find({ season: season })
-            .where('team')
+        const division_teams = await teamModel
+            .find({ 'standings.season': season })
+            .where('standings.rank')
             .in(teamsIds)
-            .sort('win')
+            .sort('standings.win')
         division_champions.push(division_teams[0])
         others.push(division_teams[1])
         others.push(division_teams[2])
