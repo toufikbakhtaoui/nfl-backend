@@ -4,7 +4,7 @@ const server = async fastify => {
         fastify.swagger()
         fastify.log.info(`server listening on ${fastify.server.address().port}`)
     } catch (error) {
-        fastify.log.error(err)
+        fastify.log.error(error)
         process.exit(1)
     }
 }

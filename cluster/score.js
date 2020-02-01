@@ -26,12 +26,12 @@ const updateOneStanding = async (season, team, w, l, d, s, c) => {
         { 'standings.rank': team, 'standings.season': season },
         {
             $inc: {
-                win: w,
-                scored: s,
-                lost: l,
-                draw: d,
-                scored: s,
-                conceded: c,
+                'standings.$.win': w,
+                'standings.$.scored': s,
+                'standings.$.lost': l,
+                'standings.$.draw': d,
+                'standings.$.scored': s,
+                'standings.$.conceded': c,
             },
         }
     )
