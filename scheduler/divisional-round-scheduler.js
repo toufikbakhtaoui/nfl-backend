@@ -1,5 +1,9 @@
 const gameModel = require('../api/games/game')
 
+exports.generateDivisionalRound = season => {
+
+}
+
 exports.prepareDivisional = async (season, champions) => {
     const divisionalWeek = 18
     const firstSeed = champions[0]
