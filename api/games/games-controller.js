@@ -2,19 +2,9 @@ const boom = require('@hapi/boom')
 const score = require('../../cluster/score')
 const seasonModel = require('../seasons/season')
 const gameModel = require('./game')
-const commons = require('../../cluster/commons')
-
-const regular_season_games = 16
-const wild_card_week = 17
-
-const wild_card = async season => {
-    const standings = await commons.getStandings(season)
-    console.log(standings)
-    //Sort division champions
-
-    //order teams in each division
-    //save games
-}
+const wildCardScheduler = require('../../scheduler/wild-card-scheduler')
+const seasonTracker = require('../../scheduler/season-tracker')
+const standingTracker = require('../../scheduler/standing-tracker')
 
 exports.getGames = async (req, reply) => {
     try {
@@ -32,6 +22,7 @@ exports.getGames = async (req, reply) => {
 
 exports.getScores = async (req, reply) => {
     try {
+        const gamesInRegularSeason = 16
         const season = Number(req.params.season)
         const week = Number(req.params.week)
         const currentSeason = await seasonModel.findOne({ seasonId: season })
@@ -39,8 +30,7 @@ exports.getScores = async (req, reply) => {
             season: season,
             week: week,
         })
-        wild_card(season)
-        if (currentSeason.weekToPlay !== week) {
+        if (week !== currentSeason.weekToPlay) {
             return games
         }
         for (game of games) {
@@ -48,11 +38,11 @@ exports.getScores = async (req, reply) => {
             game.awayTeamScore = score.getScore()
             await game.save()
         }
-        score.updateStandings(games, season)
-        if (week === regular_season_games) {
-            wild_card(season)
+        standingTracker.updateStandings(games, season)
+        seasonTracker.updateSeason(season)
+        if (week === gamesInRegularSeason) {
+            wildCardScheduler.generateWildCard(season)
         }
-        await score.updateSeason(season)
         return games
     } catch (err) {
         throw boom.boomify(err)
