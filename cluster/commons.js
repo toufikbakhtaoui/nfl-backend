@@ -9,7 +9,12 @@ exports.getStandings = async season => {
             },
         },
         {
-            $sort: {'standings.win': -1, 'standings.draw': -1, 'standings.scored': -1, 'standings.conceded': 1}
+            $sort: {
+                'standings.win': -1,
+                'standings.draw': -1,
+                'standings.scored': -1,
+                'standings.conceded': 1,
+            },
         },
         {
             $group: {
@@ -19,6 +24,7 @@ exports.getStandings = async season => {
                 },
                 teams: {
                     $push: {
+                        team: '$team',
                         city: '$city',
                         name: '$name',
                         stadium: '$stadium',
