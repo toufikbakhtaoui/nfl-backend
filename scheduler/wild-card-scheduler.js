@@ -8,6 +8,7 @@ const prepareDivisional = async (season, firstSeed, secondSeed) => {
         week: divisionalWeek,
         homeTeam: firstSeed.ranking,
         homeTeamIdentifier: firstSeed.team,
+        homeTeamName: firstSeed.name
     })
 
     await game.save()
@@ -17,6 +18,7 @@ const prepareDivisional = async (season, firstSeed, secondSeed) => {
         week: divisionalWeek,
         homeTeam: secondSeed.ranking,
         homeTeamIdentifier: secondSeed.team,
+        homeTeamName: secondSeed.name
     })
     await game.save()
 }
@@ -56,6 +58,8 @@ const getWildCardMatchups = (season, standings, conference) => {
         awayTeam: contenders[1].ranking,
         homeTeamIdentifier: champions[2].team,
         awayTeamIdentifier: contenders[1].team,
+        homeTeamName: champions[2].name,
+        awayTeamName: contenders[1].name,
     })
     games.push(game)
 
@@ -66,6 +70,8 @@ const getWildCardMatchups = (season, standings, conference) => {
         awayTeam: contenders[0].ranking,
         homeTeamIdentifier: champions[3].team,
         awayTeamIdentifier: contenders[0].team,
+        homeTeamName: champions[2].name,
+        awayTeamName: contenders[1].name,
     })
     games.push(game)
     prepareDivisional(season, champions[0], champions[1])
