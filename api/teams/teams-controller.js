@@ -1,6 +1,6 @@
 const boom = require('@hapi/boom')
 const teamModel = require('./team')
-const commons = require('../../cluster/commons')
+const standingTracker = require('../../scheduler/standing-tracker')
 
 exports.getTeams = async (req, reply) => {
     try {
@@ -14,7 +14,7 @@ exports.getTeams = async (req, reply) => {
 exports.getTeamsByRanks = async (req, reply) => {
     try {
         const season = Number(req.params.season)
-        return await commons.getStandings(season)
+        return await standingTracker.getStandings(season)
     } catch (err) {
         throw boom.boomify(err)
     }

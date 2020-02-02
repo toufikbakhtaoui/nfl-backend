@@ -1,5 +1,5 @@
-const commons = require('../cluster/commons')
 const gameModel = require('../api/games/game')
+const standingTracker = require('../scheduler/standing-tracker')
 
 const prepareDivisional = async (season, firstSeed, secondSeed) => {
     const divisionalWeek = 18
@@ -73,7 +73,7 @@ const getWildCardMatchups = (season, standings, conference) => {
 }
 
 exports.generateWildCard = async season => {
-    const standings = await commons.getStandings(season)
+    const standings = await standingTracker.getStandings(season)
     const afcMatchup = getWildCardMatchups(season, standings, 'AFC')
     const nfcMatchup = getWildCardMatchups(season, standings, 'NFC')
     const nflMatchups = []
