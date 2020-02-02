@@ -2,7 +2,6 @@ const boom = require('@hapi/boom')
 const score = require('../../cluster/score')
 const seasonModel = require('../seasons/season')
 const gameModel = require('./game')
-const wildCardScheduler = require('../../scheduler/wild-card-scheduler')
 const seasonTracker = require('../../scheduler/season-tracker')
 const standingTracker = require('../../scheduler/standing-tracker')
 
@@ -40,8 +39,8 @@ exports.getScores = async (req, reply) => {
         }
         standingTracker.updateStandings(games, season)
         seasonTracker.updateSeason(season)
-        if (week === gamesInRegularSeason) {
-            wildCardScheduler.generateWildCard(season)
+        if (week >= gamesInRegularSeason) {
+            playoffsScheduler(week, season)
         }
         return games
     } catch (err) {
