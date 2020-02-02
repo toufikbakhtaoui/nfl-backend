@@ -1,80 +1,70 @@
 const gameModel = require('../api/games/game')
 const standingTracker = require('../scheduler/standing-tracker')
+const divisionalRoundTracker = require('../scheduler/divisional-round-scheduler')
 
-const prepareDivisional = async (season, firstSeed, secondSeed) => {
-    const divisionalWeek = 18
-    let game = gameModel({
-        season: season,
-        week: divisionalWeek,
-        homeTeam: firstSeed.ranking,
-        homeTeamIdentifier: firstSeed.team,
-        homeTeamName: firstSeed.name
-    })
-
-    await game.save()
-
-    game = gameModel({
-        season: season,
-        week: divisionalWeek,
-        homeTeam: secondSeed.ranking,
-        homeTeamIdentifier: secondSeed.team,
-        homeTeamName: secondSeed.name
-    })
-    await game.save()
-}
-
-const getWildCardMatchups = (season, standings, conference) => {
-    const wildCardWeek = 17
-    const conf = standings.filter(item => item._id.conference === conference)
+const getWildCardMatchups = (season, standings, conferenceName) => {
+    const conference = standings.filter(
+        item => item._id.conference === conferenceName
+    )
     const champions = []
     const contenders = []
     let games = []
     let game = null
-    conf.forEach(div => champions.push(div.teams[0]))
-    conf.forEach(div =>
-        Array.prototype.push.apply(contenders, div.teams.slice(1))
+    const divisionChampion = 0
+    const contendersStartingPosition = 1
+    conference.forEach(div => champions.push(div.teams[divisionChampion]))
+    conference.forEach(div =>
+        Array.prototype.push.apply(
+            contenders,
+            div.teams.slice(contendersStartingPosition)
+        )
     )
-    champions.sort(function(a, b) {
+    champions.sort(function(firstTeam, secondTeam) {
         return (
-            b.win - a.win ||
-            b.draw - a.draw ||
-            b.scored - a.scored ||
-            a.conceded - b.conceded
+            secondTeam.win - firstTeam.win ||
+            secondTeam.draw - firstTeam.draw ||
+            secondTeam.scored - firstTeam.scored ||
+            firstTeam.conceded - secondTeam.conceded
         )
     })
-    contenders.sort(function(a, b) {
+    contenders.sort(function(firstTeam, secondTeam) {
         return (
-            b.win - a.win ||
-            b.draw - a.draw ||
-            b.scored - a.scored ||
-            a.conceded - b.conceded
+            secondTeam.win - firstTeam.win ||
+            secondTeam.draw - firstTeam.draw ||
+            secondTeam.scored - firstTeam.scored ||
+            firstTeam.conceded - secondTeam.conceded
         )
     })
 
+    const wildCardWeek = 17
+    const thirdSeed = 2
+    const sixthSeed = 1
     game = gameModel({
         season: season,
         week: wildCardWeek,
-        homeTeam: champions[2].ranking,
-        awayTeam: contenders[1].ranking,
-        homeTeamIdentifier: champions[2].team,
-        awayTeamIdentifier: contenders[1].team,
-        homeTeamName: champions[2].name,
-        awayTeamName: contenders[1].name,
+        homeTeam: champions[thirdSeed].ranking,
+        awayTeam: contenders[sixthSeed].ranking,
+        homeTeamIdentifier: champions[thirdSeed].team,
+        awayTeamIdentifier: contenders[sixthSeed].team,
+        homeTeamName: champions[thirdSeed].name,
+        awayTeamName: contenders[sixthSeed].name,
     })
     games.push(game)
 
+    const fourthSeed = 3
+    const fifthSeed = 0
     game = gameModel({
         season: season,
         week: wildCardWeek,
-        homeTeam: champions[3].ranking,
-        awayTeam: contenders[0].ranking,
-        homeTeamIdentifier: champions[3].team,
-        awayTeamIdentifier: contenders[0].team,
-        homeTeamName: champions[2].name,
-        awayTeamName: contenders[1].name,
+        homeTeam: champions[fourthSeed].ranking,
+        awayTeam: contenders[fifthSeed].ranking,
+        homeTeamIdentifier: champions[fourthSeed].team,
+        awayTeamIdentifier: contenders[fifthSeed].team,
+        homeTeamName: champions[fourthSeed].name,
+        awayTeamName: contenders[fifthSeed].name,
     })
     games.push(game)
-    prepareDivisional(season, champions[0], champions[1])
+    divisionalRoundTracker.prepareDivisional(season, champions)
     return games
 }
 
