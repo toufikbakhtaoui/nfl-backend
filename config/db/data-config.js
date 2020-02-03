@@ -1,6 +1,6 @@
-const initTeams = require('../../api/teams/teams-config')
-const initSeason = require('../../api/seasons/season-config')
-const initGames = require('../../api/games/games-config')
+const initTeams = require('../../src/api/teams/teams-config')
+const initSeason = require('../../src/api/seasons/season-config')
+const initGames = require('../../src/api/games/games-config')
 
 module.exports = {
     initTeams,

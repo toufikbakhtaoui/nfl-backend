@@ -1,6 +1,6 @@
 const boom = require('@hapi/boom')
 const gameModel = require('../games/game')
-const score = require('../../cluster/score')
+const score = require('../../score')
 const seasonModel = require('../seasons/season')
 
 const wildCard_week = 17

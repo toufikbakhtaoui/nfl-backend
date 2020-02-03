@@ -4,7 +4,7 @@
     "main": "index.js",
     "repository": "https://github.com/toufikbakhtaoui/nfl-backend.git",
     "scripts": {
-        "start": "nodemon server.js",
+        "start": "nodemon --inspect server.js",
         "refactor": "npx prettier --config .prettierrc.json --write \"**/*.js\""
     },
     "author": "toufikbakhtaoui <toufik.bakhtaoui@gmail.com>",

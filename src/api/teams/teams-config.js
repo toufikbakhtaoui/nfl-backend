@@ -1,4 +1,4 @@
-const teamModel = require('./team')
+const teamModel = require('../teams/team')
 
 const initTeams = async () => {
     const teams = await teamModel.find()
@@ -6,7 +6,7 @@ const initTeams = async () => {
         return
     }
     let team = null
-    const teamList = require('../../data/teams')
+    const teamList = require('../../../data/teams')
     teamList.forEach(element => {
         team = new teamModel(element)
         team.standings.push({

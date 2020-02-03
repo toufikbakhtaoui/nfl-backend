@@ -1,6 +1,6 @@
 const boom = require('@hapi/boom')
 const teamModel = require('./team')
-const standingTracker = require('../../scheduler/standing-tracker')
+const standingTracker = require('../../trackers/standing-tracker')
 
 exports.getTeams = async (req, reply) => {
     try {

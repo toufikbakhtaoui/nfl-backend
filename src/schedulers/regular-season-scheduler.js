@@ -1,6 +1,6 @@
-const part_one = require('../data/part-one')
-const part_two = require('../data/part-two.json')
-const part_three = require('../data/part-three.json')
+const part_one = require('../../data/part-one.json')
+const part_two = require('../../data/part-two.json')
+const part_three = require('../../data/part-three.json')
 const gameModel = require('../api/games/game')
 const teamModel = require('../api/teams/team')
 

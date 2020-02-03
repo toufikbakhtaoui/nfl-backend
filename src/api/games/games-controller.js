@@ -1,9 +1,9 @@
 const boom = require('@hapi/boom')
-const score = require('../../cluster/score')
+const score = require('../../score')
 const seasonModel = require('../seasons/season')
 const gameModel = require('./game')
-const seasonTracker = require('../../scheduler/season-tracker')
-const standingTracker = require('../../scheduler/standing-tracker')
+const seasonTracker = require('../../trackers/season-tracker')
+const standingTracker = require('../../trackers/standing-tracker')
 
 exports.getGames = async (req, reply) => {
     try {
