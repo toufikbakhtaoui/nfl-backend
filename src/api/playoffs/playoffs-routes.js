@@ -40,7 +40,7 @@ const routes = [
         method: 'GET',
         url: '/api/playoffs/season/:season/superbowl/scores',
         handler: playoffsController.getSuperBowlScores,
-    }
+    },
 ]
 
 module.exports = routes

@@ -8,18 +8,11 @@ const divisional_week = 18
 const championship_week = 19
 const superBowl_week = 20
 
-const divisional = () => {
+const divisional = () => {}
 
-}
+const championship = () => {}
 
-const championship = () => {
-    
-}
-
-const superBowl = () => {
-    
-}
-
+const superBowl = () => {}
 
 const simulatedGames = async (season, weekToSimulate) => {
     const weekToPlay = await seasonModel.find({ seasonId: season })
@@ -54,11 +47,10 @@ exports.getWildCard = async (req, reply) => {
     }
 }
 
-
 exports.getWildCardScores = async (req, reply) => {
     try {
         const season = req.params.season
-        
+
         const result = await simulatedGames(season, wildCard_week)
         divisional()
         return result
@@ -66,7 +58,6 @@ exports.getWildCardScores = async (req, reply) => {
         throw boom.boomify(err)
     }
 }
-
 
 exports.getDivisional = async (req, reply) => {
     try {

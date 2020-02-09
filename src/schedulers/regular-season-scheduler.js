@@ -280,13 +280,15 @@ const generate_season = async season => {
     generate_in_same_division(season)
     generate_over_conference(season)
     generate_in_conference(season)
-    const teams = await teamModel.find({ 'standings.season': season }).sort('standings.rank')
+    const teams = await teamModel
+        .find({ 'standings.season': season })
+        .sort('standings.rank')
     allGames.forEach(game => {
-        game.homeTeamIdentifier = teams[game.homeTeam -1].team
-        game.homeTeamName = teams[game.homeTeam -1].name
-        game.awayTeamIdentifier = teams[game.awayTeam -1].team
-        game.awayTeamName = teams[game.awayTeam -1].name
-    });
+        game.homeTeamIdentifier = teams[game.homeTeam - 1].team
+        game.homeTeamName = teams[game.homeTeam - 1].name
+        game.awayTeamIdentifier = teams[game.awayTeam - 1].team
+        game.awayTeamName = teams[game.awayTeam - 1].name
+    })
     await gameModel.insertMany(allGames)
 }
 

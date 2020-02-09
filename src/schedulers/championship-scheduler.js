@@ -1,3 +1,1 @@
-exports.generateChampionship = season => {
-
-}
+exports.generateChampionship = season => {}

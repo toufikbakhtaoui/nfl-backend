@@ -1,3 +1,1 @@
-exports.superBowlScheduler = season => {
-
-}
+exports.superBowlScheduler = season => {}
