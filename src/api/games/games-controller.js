@@ -4,6 +4,7 @@ const seasonModel = require('../seasons/season')
 const gameModel = require('./game')
 const seasonTracker = require('../../trackers/season-tracker')
 const standingTracker = require('../../trackers/standing-tracker')
+const playoffsScheduler = require('../../schedulers/playoffs-scheduler')
 
 exports.getGames = async (req, reply) => {
     try {
@@ -37,10 +38,12 @@ exports.getScores = async (req, reply) => {
             game.awayTeamScore = score.getScore()
             await game.save()
         }
-        standingTracker.updateStandings(games, season)
+        if (week <= gamesInRegularSeason) {
+            standingTracker.updateStandings(games, season)
+        }
         seasonTracker.updateSeason(season)
         if (week >= gamesInRegularSeason) {
-            playoffsScheduler(week, season)
+            playoffsScheduler.generatePlayoffs(week, season)
         }
         return games
     } catch (err) {
