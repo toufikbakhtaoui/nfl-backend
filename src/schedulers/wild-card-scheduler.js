@@ -1,6 +1,5 @@
 const gameModel = require('../api/games/game')
-const standingTracker = require('../scheduler/standing-tracker')
-const divisionalRoundTracker = require('../scheduler/divisional-round-scheduler')
+const standingTracker = require('../trackers/standing-tracker')
 
 const getWildCardMatchups = (season, standings, conferenceName) => {
     const conference = standings.filter(
@@ -64,7 +63,6 @@ const getWildCardMatchups = (season, standings, conferenceName) => {
         awayTeamName: contenders[fifthSeed].name,
     })
     games.push(game)
-    divisionalRoundTracker.prepareDivisional(season, champions)
     return games
 }
 
