@@ -1,57 +1,10 @@
 const gameModel = require('../api/games/game')
 const teamModel = require('../api/teams/team')
 const standingTracker = require('../trackers/standing-tracker')
+const commonScheduler = require('./common-scheduler')
 
 const wildCardWeek = 17
 const divisionalWeek = 18
-
-const getWinners = games => {
-    const winners = []
-    games.forEach(game => {
-        const winner =
-            game.homeTeamScore - game.awayTeamScore > 0
-                ? game.homeTeamIdentifier
-                : game.awayTeamIdentifier
-        winners.push(winner)
-    })
-    return winners
-}
-
-const getChampions = async (conferenceName, season) => {
-    const champions = []
-    const divisionChampion = 0
-    const standings = await standingTracker.getStandings(season)
-    const conference = standings.filter(
-        item => item._id.conference === conferenceName
-    )
-    conference.forEach(div => champions.push(div.teams[divisionChampion]))
-    champions.sort(function(firstTeam, secondTeam) {
-        return (
-            secondTeam.win - firstTeam.win ||
-            secondTeam.draw - firstTeam.draw ||
-            secondTeam.scored - firstTeam.scored ||
-            firstTeam.conceded - secondTeam.conceded
-        )
-    })
-    return champions.slice(0, 2)
-}
-
-const getWildCardsWinners = async season => {
-    const wildCardGames = await gameModel.find({
-        season: season,
-        week: wildCardWeek,
-    })
-    const winners = []
-    const winnersIds = getWinners(wildCardGames)
-    for (const winnerId of winnersIds) {
-        const team = await teamModel.findOne({
-            team: winnerId,
-            'standings.season': season,
-        })
-        winners.push(team)
-    }
-    return winners
-}
 
 const saveMatchups = async (champions, wildCardWinners, season, week) => {
     const firstSeed = champions[0]
@@ -88,33 +41,60 @@ const saveMatchups = async (champions, wildCardWinners, season, week) => {
     await gameModel.insertMany(divisionalGames)
 }
 
+const getChampions = async (conferenceName, season) => {
+    const champions = []
+    const divisionChampion = 0
+    const standings = await standingTracker.getStandings(season)
+    const conference = standings.filter(
+        item => item._id.conference === conferenceName
+    )
+    conference.forEach(div => champions.push(div.teams[divisionChampion]))
+    champions.sort(function(firstTeam, secondTeam) {
+        return (
+            secondTeam.win - firstTeam.win ||
+            secondTeam.draw - firstTeam.draw ||
+            secondTeam.scored - firstTeam.scored ||
+            firstTeam.conceded - secondTeam.conceded
+        )
+    })
+    return champions.slice(0, 2)
+}
+
+const getDivisionalRound = async (winners, season, conference) => {
+    const wildCardWinners = winners.filter(
+        team => team.conference === conference
+    )
+    wildCardWinners.sort(function(firstTeam, secondTeam) {
+        return (
+            secondTeam.standings[0].win - firstTeam.standings[0].win ||
+            secondTeam.standings[0].draw - firstTeam.standings[0].draw ||
+            secondTeam.standings[0].scored - firstTeam.standings[0].scored ||
+            firstTeam.standings[0].conceded - secondTeam.standings[0].conceded
+        )
+    })
+    const champions = await getChampions(conference, season)
+    await saveMatchups(champions, wildCardWinners, season, divisionalWeek)
+}
+
+const getWildCardsWinners = async season => {
+    const wildCardGames = await gameModel.find({
+        season: season,
+        week: wildCardWeek,
+    })
+    const winners = []
+    const winnersIds = commonScheduler.getWinners(wildCardGames)
+    for (const winnerId of winnersIds) {
+        const team = await teamModel.findOne({
+            team: winnerId,
+            'standings.season': season,
+        })
+        winners.push(team)
+    }
+    return winners
+}
+
 exports.generateDivisionalRound = async season => {
     const wildCardWinners = await getWildCardsWinners(season)
-    const afcWildCardWinners = wildCardWinners.filter(
-        team => team.conference === 'AFC'
-    )
-    afcWildCardWinners.sort(function(firstTeam, secondTeam) {
-        return (
-            secondTeam.standings[0].win - firstTeam.standings[0].win ||
-            secondTeam.standings[0].draw - firstTeam.standings[0].draw ||
-            secondTeam.standings[0].scored - firstTeam.standings[0].scored ||
-            firstTeam.standings[0].conceded - secondTeam.standings[0].conceded
-        )
-    })
-    const afcChampions = await getChampions('AFC', season)
-    await saveMatchups(afcChampions, afcWildCardWinners, season, divisionalWeek)
-
-    const nfcWildCardWinners = wildCardWinners.filter(
-        team => team.conference === 'NFC'
-    )
-    nfcWildCardWinners.sort(function(firstTeam, secondTeam) {
-        return (
-            secondTeam.standings[0].win - firstTeam.standings[0].win ||
-            secondTeam.standings[0].draw - firstTeam.standings[0].draw ||
-            secondTeam.standings[0].scored - firstTeam.standings[0].scored ||
-            firstTeam.standings[0].conceded - secondTeam.standings[0].conceded
-        )
-    })
-    const nfcChampions = await getChampions('NFC', season)
-    await saveMatchups(nfcChampions, nfcWildCardWinners, season, divisionalWeek)
+    await getDivisionalRound(wildCardWinners, season, 'AFC')
+    await getDivisionalRound(wildCardWinners, season, 'NFC')
 }

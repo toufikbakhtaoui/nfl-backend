@@ -33,7 +33,7 @@ exports.getScores = async (req, reply) => {
         if (week !== currentSeason.weekToPlay) {
             return games
         }
-        for (game of games) {
+        for (let game of games) {
             game.homeTeamScore = score.getScore()
             game.awayTeamScore = score.getScore()
             await game.save()

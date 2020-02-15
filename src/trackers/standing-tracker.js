@@ -14,7 +14,6 @@ const updateOneStanding = async (season, team, w, l, d, s, c) => {
         {
             $inc: {
                 'standings.$.win': w,
-                'standings.$.scored': s,
                 'standings.$.lost': l,
                 'standings.$.draw': d,
                 'standings.$.scored': s,
